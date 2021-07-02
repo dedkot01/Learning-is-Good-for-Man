@@ -10,3 +10,13 @@ lazy val root = project
 
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
   )
+
+lazy val functionalProgrammingInScala = project
+  .in(file("functional-programming-in-scala"))
+  .settings(
+    version := "1.0.0",
+    
+    scalaVersion := scala3Version,
+
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+  )
