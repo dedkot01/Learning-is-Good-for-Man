@@ -9,5 +9,5 @@ class Exercise22Spec:
     val l2 = List(4, 5, 6)
     val expectedList = List(5, 7, 9)
     assertEquals(expectedList, addPairwise(l1, l2))
-    assertEquals(l1, addPairwise(l1, Nil))
-    assertEquals(l2, addPairwise(Nil, l2))
+    assertEquals(Nil, addPairwise(l1, Nil))
+    assertEquals(Nil, addPairwise(Nil, l2))
