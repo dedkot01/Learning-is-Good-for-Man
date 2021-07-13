@@ -24,3 +24,9 @@ class MyEitherSpec:
     assertEquals(l, l.map2(r)(_ + _))
     assertEquals(l, r.map2(l)(_ + _))
     assertEquals(r2, r.map2(r)(_ + _))
+
+  @Test def testTraverse: Unit =
+    assertEquals(MyRight(List(2, 3)), MyEither.traverse(List(1, 2))(x => MyRight(x + 1)))
+
+  @Test def testSequence: Unit =
+    assertEquals(MyRight(List(1, 2)), MyEither.sequence(List(MyRight(1), MyRight(2))))
