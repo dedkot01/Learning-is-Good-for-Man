@@ -28,3 +28,11 @@ class OptionSpec:
     assertEquals(none, none.filter(_ > 0))
     assertEquals(o1, o1.filter(_ > 0))
     assertEquals(none, o1.filter(_ > 1))
+
+  @Test def testMean: Unit =
+    assertEquals(None, Option.mean(Seq.empty))
+    assertEquals(Some(1.5), Option.mean(Seq(1.0, 2.0)))
+
+  @Test def testVariance: Unit =
+    assertEquals(None, Option.variance(Seq.empty))
+    assertEquals(Some(0.25), Option.variance(Seq(1.0, 2.0)))
