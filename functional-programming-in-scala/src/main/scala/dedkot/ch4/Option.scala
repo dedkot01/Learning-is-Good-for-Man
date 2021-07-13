@@ -31,5 +31,9 @@ object Option:
   def variance(xs: Seq[Double]): Option[Double] =
     mean(xs) flatMap (m => mean(xs.map(x => math.pow(x - m, 2))))
 
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a.flatMap(v => b.map(v2 => f(v, v2)))
+
+
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]

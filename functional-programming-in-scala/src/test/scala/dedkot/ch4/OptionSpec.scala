@@ -6,15 +6,15 @@ import org.junit.Assert.*
 class OptionSpec:
   val none: dedkot.ch4.Option[Int] = dedkot.ch4.None
   val o1 = dedkot.ch4.Some(1)
-  val expectedOption = dedkot.ch4.Some(2)
+  val o2 = dedkot.ch4.Some(2)
 
   @Test def testMap: Unit =
     assertEquals(none, none.map(_ + 1))
-    assertEquals(expectedOption, o1.map(_ + 1))
+    assertEquals(o2, o1.map(_ + 1))
 
   @Test def testFlatMap: Unit =
     assertEquals(none, none.flatMap(x => dedkot.ch4.Some(x + 1)))
-    assertEquals(expectedOption, o1.flatMap(x => dedkot.ch4.Some(x + 1)))
+    assertEquals(o2, o1.flatMap(x => dedkot.ch4.Some(x + 1)))
 
   @Test def testGetOrElse: Unit =
     assertEquals(1, none.getOrElse(1))
@@ -36,3 +36,7 @@ class OptionSpec:
   @Test def testVariance: Unit =
     assertEquals(None, Option.variance(Seq.empty))
     assertEquals(Some(0.25), Option.variance(Seq(1.0, 2.0)))
+
+  @Test def testMap2: Unit =
+    assertEquals(None, Option.map2(None, None)((x, y) => x))
+    assertEquals(o2, Option.map2(o1, o1)(_ + _))
