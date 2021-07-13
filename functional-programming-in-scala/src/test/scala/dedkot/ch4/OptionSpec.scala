@@ -40,3 +40,8 @@ class OptionSpec:
   @Test def testMap2: Unit =
     assertEquals(None, Option.map2(None, None)((x, y) => x))
     assertEquals(o2, Option.map2(o1, o1)(_ + _))
+
+  @Test def testSequence: Unit =
+    assertEquals(Some(List()), Option.sequence(Nil))
+    assertEquals(None, Option.sequence(List(o1, none)))
+    assertEquals(Some(List(1, 2)), Option.sequence(List(o1, o2)))

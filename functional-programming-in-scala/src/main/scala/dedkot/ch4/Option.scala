@@ -34,6 +34,9 @@ object Option:
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
     a.flatMap(v => b.map(v2 => f(v, v2)))
 
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match
+    case Nil => Some(Nil)
+    case h :: t => h.flatMap(h2 => sequence(t).map(h2 :: _))
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
