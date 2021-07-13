@@ -42,6 +42,10 @@ class OptionSpec:
     assertEquals(o2, Option.map2(o1, o1)(_ + _))
 
   @Test def testSequence: Unit =
-    assertEquals(Some(List()), Option.sequence(Nil))
+    assertEquals(Some(Nil), Option.sequence(Nil))
     assertEquals(None, Option.sequence(List(o1, none)))
     assertEquals(Some(List(1, 2)), Option.sequence(List(o1, o2)))
+
+  @Test def testTraverse: Unit =
+    assertEquals(Some(Nil), Option.traverse(List.empty)(Some(_)))
+    assertEquals(Some(List(1, 2)), Option.traverse(List("1", "2"))(x => Some(x.toInt)))

@@ -38,5 +38,9 @@ object Option:
     case Nil => Some(Nil)
     case h :: t => h.flatMap(h2 => sequence(t).map(h2 :: _))
 
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match
+    case Nil => Some(Nil)
+    case h :: t => map2(f(h), traverse(t)(f))(_ :: _)
+
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
