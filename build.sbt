@@ -21,7 +21,7 @@ lazy val simpleHttp4sServer = project
   .settings(
     name := "simple-http4s-server",
     version := "1.0.0",
-    scalaVersion := "3.0.0",
+    scalaVersion := "2.13.6",
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-blaze-server" % http4sVersion,
       "org.http4s" %% "http4s-circe"        % http4sVersion,
