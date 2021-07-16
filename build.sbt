@@ -5,6 +5,17 @@ lazy val root = project
     version := "1.0.0"
   )
 
+lazy val somethingSmall = project
+  .in(file("something-small"))
+  .settings(
+    name := "something-small",
+    version := "1.0.0",
+    scalaVersion := "2.13.6",
+    libraryDependencies ++= Seq(
+      "com.softwaremill.quicklens" %% "quicklens" % "1.7.4"
+    )
+  )
+
 lazy val functionalProgrammingInScala = project
   .in(file("functional-programming-in-scala"))
   .settings(
