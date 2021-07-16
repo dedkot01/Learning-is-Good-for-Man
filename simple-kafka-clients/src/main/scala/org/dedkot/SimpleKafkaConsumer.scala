@@ -1,6 +1,8 @@
 package org.dedkot
 
-import org.apache.kafka.clients.consumer.KafkaConsumer
+import com.sksamuel.avro4s.kafka.GenericSerde
+import org.apache.kafka.clients.consumer.{ ConsumerConfig, KafkaConsumer }
+import org.dedkot.model.User
 
 import java.time.Duration
 import java.util
@@ -13,10 +15,10 @@ object SimpleKafkaConsumer extends App {
   consumerSettings.setProperty("enable.auto.commit", "true")
   consumerSettings.setProperty("auto.commit.interval.ms", "1000")
   consumerSettings.setProperty("key.deserializer", "org.apache.kafka.common.serialization.VoidDeserializer")
-  consumerSettings.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
+  consumerSettings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, new GenericSerde[User]())
 
-  val consumer = new KafkaConsumer[String, String](consumerSettings)
-  consumer.subscribe(util.Arrays.asList("topic"))
+  val consumer = new KafkaConsumer[Unit, User](consumerSettings, null, new GenericSerde[User]())
+  consumer.subscribe(util.Arrays.asList("eva00"))
 
   while (true) {
     val records = consumer.poll(Duration.ofMillis(100))

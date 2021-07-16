@@ -45,5 +45,9 @@ lazy val simpleKafkaClients = project
     name := "simple-kafka-clients",
     version := "1.0.0",
     scalaVersion := "2.13.6",
-    libraryDependencies ++= Seq("org.apache.kafka" % "kafka-clients" % "2.8.0")
+    libraryDependencies ++= Seq(
+      "org.apache.kafka"    % "kafka-clients" % "2.8.0",
+      "com.sksamuel.avro4s" %% "avro4s-core"  % "4.0.8",
+      "com.sksamuel.avro4s" %% "avro4s-kafka" % "4.0.8"
+    )
   )
