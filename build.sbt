@@ -29,3 +29,12 @@ lazy val simpleHttp4sServer = project
       "io.circe"   %% "circe-generic"       % "0.14.1"
     )
   )
+
+lazy val simpleFs2Kafka = project
+  .in(file("simple-fs2-kafka"))
+  .settings(
+    name := "simple-fs2-kafka",
+    version := "1.0.0",
+    scalaVersion := "2.13.6",
+    libraryDependencies ++= Seq("com.github.fd4s" %% "fs2-kafka" % "1.7.0")
+  )
