@@ -38,3 +38,12 @@ lazy val simpleFs2Kafka = project
     scalaVersion := "2.13.6",
     libraryDependencies ++= Seq("com.github.fd4s" %% "fs2-kafka" % "1.7.0")
   )
+
+lazy val simpleKafkaClients = project
+  .in(file("simple-kafka-clients"))
+  .settings(
+    name := "simple-kafka-clients",
+    version := "1.0.0",
+    scalaVersion := "2.13.6",
+    libraryDependencies ++= Seq("org.apache.kafka" % "kafka-clients" % "2.8.0")
+  )
