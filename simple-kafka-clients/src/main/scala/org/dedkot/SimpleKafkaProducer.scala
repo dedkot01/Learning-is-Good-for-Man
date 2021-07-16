@@ -15,7 +15,7 @@ object SimpleKafkaProducer extends App {
 
   val producer = new KafkaProducer[Unit, User](producerSettings, null, new GenericSerde[User]())
 
-  producer.send(new ProducerRecord[Unit, User]("eva00", User("Naruto", 17)))
+  producer.send(new ProducerRecord[Unit, User]("eva01", User("Naruto", 12093)))
 
   producer.close()
 }
