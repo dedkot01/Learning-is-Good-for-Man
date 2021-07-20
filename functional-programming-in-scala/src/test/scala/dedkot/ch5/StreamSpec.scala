@@ -13,12 +13,15 @@ class StreamSpec:
     assertEquals(l123, s123.toList)
     assertEquals(List.empty, Stream().toList)
 
-  @Test def testTake: Unit = {
+  @Test def testTake: Unit =
     assertEquals(l12, s123.take(2).toList)
     assertEquals(l123, s123.take(5).toList)
-  }
 
-  @Test def testDrop: Unit = {
+  @Test def testDrop: Unit =
     assertEquals(l23, s123.drop(1).toList)
     assertEquals(List.empty, s123.drop(3).toList)
-  }
+
+  @Test def testTakeWhile: Unit =
+    assertEquals(l12, s123.takeWhile(_ < 3).toList)
+    assertEquals(l123, s123.takeWhile(_ < 4).toList)
+    assertEquals(List.empty, s123.takeWhile(_ < 0).toList)
