@@ -35,3 +35,7 @@ class StreamSpec:
     assertEquals(l12, s123.takeWhileViaFoldRight(_ < 3).toList)
     assertEquals(l1, s123.takeWhileViaFoldRight(_ < 2).toList)
     assertEquals(List.empty, s123.takeWhileViaFoldRight(_ < 0).toList)
+
+  @Test def testHeadOption: Unit =
+    assertEquals(Option(1), s123.headOption)
+    assertEquals(None, Stream.empty.headOption)
