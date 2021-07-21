@@ -74,6 +74,7 @@ lazy val HttpServerKafka = project
       "org.http4s"          %% "http4s-dsl"          % http4sVersion,
       "io.circe"            %% "circe-generic"       % "0.14.1",
       "org.apache.kafka"    % "kafka-clients"        % "2.8.0",
-      "com.sksamuel.avro4s" %% "avro4s-kafka"        % "4.0.8"
+      "com.sksamuel.avro4s" %% "avro4s-kafka"        % "4.0.8",
+      "com.typesafe"        % "config"               % "1.4.1"
     )
   )
