@@ -25,3 +25,7 @@ class StreamSpec:
     assertEquals(l12, s123.takeWhile(_ < 3).toList)
     assertEquals(l123, s123.takeWhile(_ < 4).toList)
     assertEquals(List.empty, s123.takeWhile(_ < 0).toList)
+
+  @Test def testForAll: Unit =
+    assertEquals(true, s123.forAll(_ < 4))
+    assertEquals(false, s123.forAll(_ < 3))

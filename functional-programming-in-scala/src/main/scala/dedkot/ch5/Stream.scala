@@ -36,7 +36,7 @@ trait Stream[+A]:
     case Cons(h, t) if p(h()) => cons(h(), t().takeWhile(p))
     case _ => empty
 
-  def forAll(p: A => Boolean): Boolean = ???
+  def forAll(p: A => Boolean): Boolean = foldRight(true)((h, t) => p(h) && t)
 
   def headOption: Option[A] = ???
 
