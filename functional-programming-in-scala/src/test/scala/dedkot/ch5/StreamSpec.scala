@@ -4,6 +4,7 @@ import org.junit.Test
 import org.junit.Assert.*
 
 class StreamSpec:
+  val l1 = List(1)
   val l12 = List(1, 2)
   val l23 = List(2, 3)
   val l123 = List(1, 2, 3)
@@ -29,3 +30,8 @@ class StreamSpec:
   @Test def testForAll: Unit =
     assertEquals(true, s123.forAll(_ < 4))
     assertEquals(false, s123.forAll(_ < 3))
+
+  @Test def testTakeWhileViaFoldRight: Unit =
+    assertEquals(l12, s123.takeWhileViaFoldRight(_ < 3).toList)
+    assertEquals(l1, s123.takeWhileViaFoldRight(_ < 2).toList)
+    assertEquals(List.empty, s123.takeWhileViaFoldRight(_ < 0).toList)

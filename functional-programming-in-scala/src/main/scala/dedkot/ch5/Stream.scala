@@ -1,8 +1,6 @@
 package dedkot.ch5
 
-import dedkot.ch5.Stream.empty
-
-import Stream._
+import dedkot.ch5.Stream.{empty, _}
 
 trait Stream[+A]:
 
@@ -35,6 +33,8 @@ trait Stream[+A]:
   def takeWhile(p: A => Boolean): Stream[A] = this match
     case Cons(h, t) if p(h()) => cons(h(), t().takeWhile(p))
     case _ => empty
+
+  def takeWhileViaFoldRight(p: A => Boolean): Stream[A] = foldRight(empty[A])((h, t) => if (p(h)) cons(h, t) else empty)
 
   def forAll(p: A => Boolean): Boolean = foldRight(true)((h, t) => p(h) && t)
 
