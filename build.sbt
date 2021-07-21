@@ -61,3 +61,19 @@ lazy val simpleKafkaClients = project
       "com.sksamuel.avro4s" %% "avro4s-kafka" % "4.0.8"
     )
   )
+
+lazy val HttpServerKafka = project
+  .in(file("http-server-kafka"))
+  .settings(
+    name := "http-server-kafka",
+    version := "1.0.0",
+    scalaVersion := "2.13.6",
+    libraryDependencies ++= Seq(
+      "org.http4s"          %% "http4s-blaze-server" % http4sVersion,
+      "org.http4s"          %% "http4s-circe"        % http4sVersion,
+      "org.http4s"          %% "http4s-dsl"          % http4sVersion,
+      "io.circe"            %% "circe-generic"       % "0.14.1",
+      "org.apache.kafka"    % "kafka-clients"        % "2.8.0",
+      "com.sksamuel.avro4s" %% "avro4s-kafka"        % "4.0.8"
+    )
+  )
