@@ -58,3 +58,6 @@ class StreamSpec:
 
   @Test def testConstant: Unit =
     assertEquals(List(3, 3, 3, 3, 3), Stream.constant(3).take(5).toList)
+
+  @Test def testFrom: Unit =
+    assertEquals(List(3, 4, 5, 6, 7), Stream.from(3).take(5).toList)
