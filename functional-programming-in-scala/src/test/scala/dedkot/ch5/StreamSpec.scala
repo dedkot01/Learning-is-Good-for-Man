@@ -61,3 +61,6 @@ class StreamSpec:
 
   @Test def testFrom: Unit =
     assertEquals(List(3, 4, 5, 6, 7), Stream.from(3).take(5).toList)
+    
+  @Test def testFib: Unit =
+    assertEquals(List(0, 1, 1, 2, 3, 5, 8, 13, 21), Stream.fibs().take(9).toList)
