@@ -55,3 +55,6 @@ class StreamSpec:
 
   @Test def testFlatMap: Unit =
     assertEquals(l123, s1s23.flatMap(x => x).toList)
+
+  @Test def testConstant: Unit =
+    assertEquals(List(3, 3, 3, 3, 3), Stream.constant(3).take(5).toList)
