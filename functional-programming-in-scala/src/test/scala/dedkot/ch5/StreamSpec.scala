@@ -5,11 +5,13 @@ import org.junit.Assert.*
 
 class StreamSpec:
   val l1     = List(1)
+  val l111   = List(1, 1, 1)
   val l12    = List(1, 2)
   val l23    = List(2, 3)
   val l123   = List(1, 2, 3)
   val l3x5   = List(3, 3, 3, 3, 3)
   val l34567 = List(3, 4, 5, 6, 7)
+  val fibs   = List(0, 1, 1, 2, 3, 5, 8, 13, 21)
   val s1     = Stream(1)
   val s12    = Stream(1, 2)
   val s23    = Stream(2, 3)
@@ -65,7 +67,19 @@ class StreamSpec:
     assertEquals(l34567, Stream.from(3).take(5).toList)
 
   @Test def testFib: Unit =
-    assertEquals(List(0, 1, 1, 2, 3, 5, 8, 13, 21), Stream.fibs().take(9).toList)
+    assertEquals(fibs, Stream.fibs().take(9).toList)
 
   @Test def testUnfold: Unit =
     assertEquals(l34567, Stream.unfold(3)(x => Option(x, x + 1)).take(5).toList)
+
+  @Test def testOnesViaUnfold: Unit =
+    assertEquals(l111, Stream.onesViaUnfold.take(3).toList)
+
+  @Test def testConstantViaUnfold: Unit =
+    assertEquals(l3x5, Stream.constantViaUnfold(3).take(5).toList)
+
+  @Test def testFromViaUnfold: Unit =
+    assertEquals(l34567, Stream.fromViaUnfold(3).take(5).toList)
+
+  @Test def testFibsViaUnfold: Unit =
+    assertEquals(fibs, Stream.fibsViaUnfold().take(9).toList)
