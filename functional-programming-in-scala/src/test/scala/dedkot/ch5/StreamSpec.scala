@@ -4,15 +4,17 @@ import org.junit.Test
 import org.junit.Assert.*
 
 class StreamSpec:
-  val l1    = List(1)
-  val l12   = List(1, 2)
-  val l23   = List(2, 3)
-  val l123  = List(1, 2, 3)
-  val s1    = Stream(1)
-  val s12   = Stream(1, 2)
-  val s23   = Stream(2, 3)
-  val s123  = Stream(1, 2, 3)
-  val s1s23 = Stream(s1, s23)
+  val l1     = List(1)
+  val l12    = List(1, 2)
+  val l23    = List(2, 3)
+  val l123   = List(1, 2, 3)
+  val l3x5   = List(3, 3, 3, 3, 3)
+  val l34567 = List(3, 4, 5, 6, 7)
+  val s1     = Stream(1)
+  val s12    = Stream(1, 2)
+  val s23    = Stream(2, 3)
+  val s123   = Stream(1, 2, 3)
+  val s1s23  = Stream(s1, s23)
 
   @Test def testToList: Unit =
     assertEquals(l123, s123.toList)
@@ -57,10 +59,13 @@ class StreamSpec:
     assertEquals(l123, s1s23.flatMap(x => x).toList)
 
   @Test def testConstant: Unit =
-    assertEquals(List(3, 3, 3, 3, 3), Stream.constant(3).take(5).toList)
+    assertEquals(l3x5, Stream.constant(3).take(5).toList)
 
   @Test def testFrom: Unit =
-    assertEquals(List(3, 4, 5, 6, 7), Stream.from(3).take(5).toList)
-    
+    assertEquals(l34567, Stream.from(3).take(5).toList)
+
   @Test def testFib: Unit =
     assertEquals(List(0, 1, 1, 2, 3, 5, 8, 13, 21), Stream.fibs().take(9).toList)
+
+  @Test def testUnfold: Unit =
+    assertEquals(l34567, Stream.unfold(3)(x => Option(x, x + 1)).take(5).toList)

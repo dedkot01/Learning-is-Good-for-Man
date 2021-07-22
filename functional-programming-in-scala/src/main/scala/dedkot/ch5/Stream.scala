@@ -75,4 +75,6 @@ object Stream:
 
   def fibs(first: Int = 0, second: Int = 1): Stream[Int] = cons(first, fibs(second, first + second))
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z) match
+    case Some((h, t)) => cons(h, unfold(t)(f))
+    case None => empty
