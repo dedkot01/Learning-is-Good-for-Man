@@ -37,6 +37,9 @@ object RNG:
     val i = nonNegativeInt(rng)
     (i._1 / (Int.MaxValue.toDouble + 1), i._2)
 
+  def doubleViaMap: Rand[Double] =
+    map(nonNegativeInt)(_ / (Int.MaxValue.toDouble + 1))
+
   def intDouble(rng: RNG): ((Int,Double), RNG) =
     val i = nonNegativeInt(rng)
     val d = double(rng)

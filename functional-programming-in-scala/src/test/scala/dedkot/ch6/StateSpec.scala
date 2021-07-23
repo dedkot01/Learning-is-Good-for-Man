@@ -29,3 +29,7 @@ class StateSpec:
   @Test def testInts: Unit =
     val expected = (List(1563994289, 1612966641, 384748), RNG.Simple(102497929776471))
     assertEquals(expected, RNG.ints(3)(rngSimple1))
+
+  @Test def testDoubleViaMap: Unit =
+    val expected = (1.7916224896907806E-4, RNG.Simple(25214903928))
+    assertEquals(expected, RNG.doubleViaMap(rngSimple1))
