@@ -4,19 +4,21 @@ import org.junit.Test
 import org.junit.Assert.*
 
 class StreamSpec:
-  val l1     = List(1)
-  val l111   = List(1, 1, 1)
-  val l12    = List(1, 2)
-  val l23    = List(2, 3)
-  val l123   = List(1, 2, 3)
-  val l3x5   = List(3, 3, 3, 3, 3)
-  val l34567 = List(3, 4, 5, 6, 7)
-  val fibs   = List(0, 1, 1, 2, 3, 5, 8, 13, 21)
-  val s1     = Stream(1)
-  val s12    = Stream(1, 2)
-  val s23    = Stream(2, 3)
-  val s123   = Stream(1, 2, 3)
-  val s1s23  = Stream(s1, s23)
+  val l1      = List(1)
+  val l111    = List(1, 1, 1)
+  val l12     = List(1, 2)
+  val l23     = List(2, 3)
+  val l123    = List(1, 2, 3)
+  val lzs123  = List(("one", 1), ("two", 2), ("three", 3))
+  val l3x5    = List(3, 3, 3, 3, 3)
+  val l34567  = List(3, 4, 5, 6, 7)
+  val fibs    = List(0, 1, 1, 2, 3, 5, 8, 13, 21)
+  val s1      = Stream(1)
+  val s12     = Stream(1, 2)
+  val s23     = Stream(2, 3)
+  val s123    = Stream(1, 2, 3)
+  val sStr123 = Stream("one", "two", "three")
+  val s1s23   = Stream(s1, s23)
 
   @Test def testToList: Unit =
     assertEquals(l123, s123.toList)
@@ -83,3 +85,16 @@ class StreamSpec:
 
   @Test def testFibsViaUnfold: Unit =
     assertEquals(fibs, Stream.fibsViaUnfold().take(9).toList)
+
+  @Test def testMapViaUnfold: Unit =
+    assertEquals(l23, s12.mapViaUnfold(_ + 1).toList)
+
+  @Test def testTakeViaUnfold: Unit =
+    assertEquals(l12, s123.takeViaUnfold(2).toList)
+
+  @Test def testTakeWhileViaUnfold: Unit =
+    assertEquals(l12, s123.takeWhileViaUnfold(_ < 3).toList)
+
+  @Test def testZipWith: Unit =
+    assertEquals(lzs123, s123.zipWith(sStr123)((i, s) => (s, i)).toList)
+    assertEquals(lzs123.take(2), s12.zipWith(sStr123)((i, s) => (s, i)).toList)
