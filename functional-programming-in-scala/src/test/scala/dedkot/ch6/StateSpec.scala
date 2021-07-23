@@ -25,3 +25,7 @@ class StateSpec:
   @Test def testDouble3: Unit =
     val expected = ((1.7916224896907806E-4,0.7510961224325001,0.7282915939576924), RNG.Simple(102497929776471))
     assertEquals(expected, RNG.double3(rngSimple1))
+
+  @Test def testInts: Unit =
+    val expected = (List(1563994289, 1612966641, 384748), RNG.Simple(102497929776471))
+    assertEquals(expected, RNG.ints(3)(rngSimple1))

@@ -52,7 +52,14 @@ object RNG:
     val d3 = double(d2._2)
     ((d1._1, d2._1, d3._1), d3._2)
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) =
+    def next(n: Int, rng: RNG, l: List[Int]): (List[Int], RNG) =
+      if (n <= 0) (l, rng)
+      else {
+        val i = nonNegativeInt(rng)
+        next(n - 1, i._2, i._1 :: l)
+      }
+    next(count, rng, List())
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
