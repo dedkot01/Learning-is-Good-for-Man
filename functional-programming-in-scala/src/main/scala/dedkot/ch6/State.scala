@@ -1,5 +1,7 @@
 package dedkot.ch6
 
+import scala.annotation.tailrec
+
 trait RNG:
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
 
@@ -26,11 +28,14 @@ object RNG:
       (f(a), rng2)
     }
 
+  @tailrec
   def nonNegativeInt(rng: RNG): (Int, RNG) = rng.nextInt match
     case i if (i._1 >= 0 && i._1 <= Int.MaxValue) => i
     case i => nonNegativeInt(i._2)
 
-  def double(rng: RNG): (Double, RNG) = ???
+  def double(rng: RNG): (Double, RNG) =
+    val i = nonNegativeInt(rng)
+    (i._1 / (Int.MaxValue.toDouble + 1), i._2)
 
   def intDouble(rng: RNG): ((Int,Double), RNG) = ???
 
