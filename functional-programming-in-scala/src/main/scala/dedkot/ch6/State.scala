@@ -37,11 +37,20 @@ object RNG:
     val i = nonNegativeInt(rng)
     (i._1 / (Int.MaxValue.toDouble + 1), i._2)
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) =
+    val i = nonNegativeInt(rng)
+    val d = double(rng)
+    ((i._1, d._1), i._2)
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) =
+    intDouble(rng) match
+      case ((i, d), r) => ((d, i), r)
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) =
+    val d1 = double(rng)
+    val d2 = double(d1._2)
+    val d3 = double(d2._2)
+    ((d1._1, d2._1, d3._1), d3._2)
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
 
