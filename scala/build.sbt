@@ -78,3 +78,16 @@ lazy val HttpServerKafka = project
       "com.typesafe"        % "config"               % "1.4.1"
     )
   )
+
+lazy val SimpleCassandraClients = project
+  .in(file("simple-cassandra-clients"))
+  .settings(
+    name := "simple-cassandra-clients",
+    version := "1.0.0",
+    scalaVersion := "2.12.14",
+    libraryDependencies ++= Seq(
+      "org.apache.flink" %% "flink-clients"             % "1.13.2",
+      "org.apache.flink" %% "flink-streaming-scala"     % "1.13.2",
+      "org.apache.flink" %% "flink-connector-cassandra" % "1.13.2"
+    )
+  )
