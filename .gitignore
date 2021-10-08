@@ -1,6 +1,12 @@
+# redactors and plugins
 .bloop
 .metals
 .vscode
 .idea
 .bsp
+
+# scala
 target
+
+# python
+.venv
