@@ -8,5 +8,5 @@ with open("encrypted.bin", "rb") as inp, open('passwords.txt', 'r') as passw:
             result = simplecrypt.decrypt(p.strip(), encrypted)
             break
         except simplecrypt.DecryptionException:
-            print(p + 'bad password')
+            print('{} bad password'.format(p.strip()))
     print(result)
