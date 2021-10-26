@@ -1,5 +1,7 @@
 import time
 
+from python.exercise.stub import Stub
+
 def timeit(method):
     def timed(*args, **kw):
         ts = time.time()
@@ -22,9 +24,31 @@ a = test(3)
 
 print(a)
 
-# while True:
-#     data = {}
-#     data = frame_reader.read()
-#     data = detector.detect()
-#     data = drawer.draw()
-#     data = frame_writer.write()
+def func():
+    time.sleep(1)
+    print("Nice")
+
+func()
+
+class A:
+    t = {}
+
+    def timeit(func):
+        ts = time.time()
+        result = func()
+        A.t.append(time.time() - ts)
+        print(f'{A.t[-1]} ms')
+        return result
+
+A.timeit(func)
+print(A.t[-1])
+
+# a = timeit(lambda : (a = 2,
+#     print(a)))
+
+while True:
+    data = {}
+    data = Stub.read()
+    data = Stub.detect()
+    data = Stub.draw()
+    data = Stub.write()
