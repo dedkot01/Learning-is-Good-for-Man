@@ -23,6 +23,9 @@ class Human:
     def __init__(self, name):
         self.name = name
 
+    def do_something(self):
+        print(f'{self.name} do something')
+
 
 class Student(Human):
     def __init__(self, name):

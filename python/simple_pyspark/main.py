@@ -21,4 +21,5 @@ if __name__ == '__main__':
 
     dates = rdd.toDF()
     dates.printSchema()
-    dates.select(dates.date).show(3)
+    sql_dates = dates.createOrReplaceTempView('feeds')
+    

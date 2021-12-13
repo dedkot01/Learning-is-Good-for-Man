@@ -1,6 +1,6 @@
 package org.dedkot
 
-class Animal(val name: String)
+case class Animal(name: String)
 
 class Dog(name: String) extends Animal(name) {
   def woof(): Unit = print(s"$name - woof")
@@ -10,7 +10,7 @@ class Cat(name: String) extends Animal(name) {
   def meow(): Unit = print(s"$name - meow")
 }
 
-class Human(val name: String)
+case class Human(val name: String)
 
 class Student(name: String) extends Human(name) {
   def doHomework(): Unit = print(s"$name do homework")
@@ -21,23 +21,25 @@ class Teacher(name: String) extends Human(name) {
 }
 
 object Polymorph extends App {
-  def printHumanNames(l: List[Human]): Unit = l.foreach(x => println(x.name))
+  def printNames[A](l: List[A]): Unit = l.foreach {
+    case Animal(name) => println(name)
+    case Human(name)  => println(name)
+    case _            => "WTF?!"
+  }
 
-  def printAnimalNames(l: List[Animal]): Unit = l.foreach(x => println(x.name))
-
-  val lHumans: List[Human] = List(new Student("Dima"), new Teacher("Tatiana"))
+  val lHumans: List[Human]   = List(new Student("Dima"), new Teacher("Tatiana"))
   val lAnimals: List[Animal] = List(new Dog("Sharik"), new Cat("Murzik"))
 
-  print(lHumans)
-  print(lAnimals)
+  println(lHumans)
+  println(lAnimals)
 
-  printHumanNames(lHumans)
-  print("------------")
-  printAnimalNames(lAnimals)
+  printNames(lHumans)
+  println("------------")
+  printNames(lAnimals)
 
-  print("============")
+  println("============")
 
-  /*printHumanNames(lAnimals)
-  print("------------")
-  printAnimalNames(lHumans)*/
+  printNames(lAnimals)
+  println("------------")
+  printNames(lHumans)
 }
