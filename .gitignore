@@ -10,5 +10,6 @@ target
 
 # python
 .venv
+.lvenv
 __pycache__
 local.py
