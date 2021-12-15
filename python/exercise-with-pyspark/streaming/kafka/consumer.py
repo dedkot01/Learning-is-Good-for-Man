@@ -10,4 +10,11 @@ if __name__ == '__main__':
         .option('kafka.bootstrap.servers', 'localhost:9092')\
         .option('subscribe', 'eva00')\
         .load()
-    print(df.selectExpr('CAST(key AS STRING)', 'CAST(value AS STRING)'))
+
+    ds = df\
+        .selectExpr('CAST (key AS STRING)', 'CAST (value AS STRING)')\
+        .writeStream\
+        .format('console')\
+        .start()\
+        .awaitTermination()
+    
