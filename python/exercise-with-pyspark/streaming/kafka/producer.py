@@ -20,4 +20,3 @@ if __name__ == '__main__':
         .option("checkpointLocation", "/tmp/kafka_producer1/checkpoint")\
         .start()\
         .awaitTermination()
-    

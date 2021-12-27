@@ -17,4 +17,3 @@ if __name__ == '__main__':
         .format('console')\
         .start()\
         .awaitTermination()
-    

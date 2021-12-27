@@ -9,11 +9,11 @@ if __name__ == '__main__':
         .format('socket')\
         .options(
             host='localhost',
-            port=9999
+            port=9999,
         )\
         .load()
     words = lines.select(
-        explode(split(lines.value, " ")).alias("word")
+        explode(split(lines.value, " ")).alias("word"),
     )
     wordCounts = words.groupBy("word").count()
 
