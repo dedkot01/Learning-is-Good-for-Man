@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 
 from airflow import DAG
+from airflow.models import Connection
+from airflow.models import Variable
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonVirtualenvOperator
-from airflow.models import Variable
-from airflow.models import Connection
 
 from minio_get_file import main as extract_func
 
