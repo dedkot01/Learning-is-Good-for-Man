@@ -1,9 +1,8 @@
-from minio.api import Minio
-
-
 def main(bucket_name: str, object_name: str, file_path: str) -> None:
+    from minio.api import Minio
+
     client = Minio(
-        'localhost:9000',
+        'minio:9000',
         access_key='minio',
         secret_key='miniominio',
         secure=False,

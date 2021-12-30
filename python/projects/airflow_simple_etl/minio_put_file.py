@@ -1,9 +1,8 @@
-from minio import Minio
-
-
 def main(bucket_name: str, object_name: str, file_path: str) -> None:
+    from minio import Minio
+
     client = Minio(
-        'localhost:9000',
+        'minio:9000',
         access_key='minio',
         secret_key='miniominio',
         secure=False,
@@ -22,6 +21,6 @@ def main(bucket_name: str, object_name: str, file_path: str) -> None:
 if __name__ == '__main__':
     main(
         bucket_name='output',
-        object_name='17:54-23122021.csv',
-        file_path='./17:54-23122021.csv',
+        object_name='output.csv',
+        file_path='./output.csv',
     )
