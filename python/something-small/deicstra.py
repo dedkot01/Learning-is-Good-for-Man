@@ -7,11 +7,9 @@ def dijkstra(v: list, s: int, g: dict):
     d[s] = 0
     
 
-
 kv, kw = map(int, input().split())
 g = {}
 for i in range(kw):
     s, e, w = map(int, input().split())
     g[(s, e)] = w
 s, e = map(int, input().split())
-
