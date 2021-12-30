@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from airflow import DAG
+from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonVirtualenvOperator
 
 from minio_get_file import main as extract_func
@@ -11,7 +12,7 @@ from pandas_simple_transform import main as transform_func
 
 with DAG(
     dag_id='etl_minio_input_bucket',
-    schedule_interval='15 minutes',
+    schedule_interval=timedelta(minutes=15),
     start_date=datetime(2021, 12, 30),
     catchup=False,
     tags=['minio', 'pandas'],
@@ -20,7 +21,6 @@ with DAG(
         task_id='extract',
         requirements=['minio==7.1.2'],
         system_site_packages=False,
-        python_version='3.10.1',
         python_callable=extract_func,
         op_kwargs={
             'bucket_name': 'input',
@@ -32,7 +32,6 @@ with DAG(
         task_id='transform',
         requirements=['pandas==1.3.5'],
         system_site_packages=False,
-        python_version='3.10.1',
         python_callable=transform_func,
         op_kwargs={
             'file': '201170.csv',
@@ -42,7 +41,6 @@ with DAG(
         task_id='load',
         requirements=['minio==7.1.2'],
         system_site_packages=False,
-        python_version='3.10.1',
         python_callable=load_func,
         op_kwargs={
             'bucket_name': 'output',
@@ -50,5 +48,9 @@ with DAG(
             'file_path': './output.csv',
         },
     )
+    clean = BashOperator(
+        task_id='clean',
+        bash_command='rm 201170.csv output.csv',
+    )
 
-    extract >> transform >> load
+    extract >> transform >> load >> clean
