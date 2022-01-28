@@ -13,3 +13,6 @@ target
 .lvenv
 __pycache__
 local.py
+
+# general
+.local

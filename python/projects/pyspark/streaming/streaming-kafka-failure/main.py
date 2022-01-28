@@ -8,6 +8,9 @@ def main():
              .getOrCreate())
     spark.sparkContext.setLogLevel('WARN')
 
+    # Источник - кафка топик "eva00",
+    # отключенный параметр "failOnDataLoss" не прерывает джобу, если топик был удалён
+    # https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html 
     df = (spark
           .readStream
           .format('kafka')
@@ -16,6 +19,7 @@ def main():
           .option('failOnDataLoss', 'false')
           .load())
 
+    # Выход - кафка топик "eva01"
     (df
      .writeStream
      .format('kafka')
