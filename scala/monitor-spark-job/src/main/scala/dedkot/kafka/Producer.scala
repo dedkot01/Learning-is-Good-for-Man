@@ -6,7 +6,7 @@ import org.apache.kafka.common.serialization.StringSerializer
 
 import java.util.Properties
 
-class Producer(bootstrapServers: String, topics: Seq[String]) {
+class Producer(bootstrapServers: String, topic: String) {
   private val settings = new Properties
   settings.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
   settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer")
@@ -15,13 +15,12 @@ class Producer(bootstrapServers: String, topics: Seq[String]) {
   val producer = new KafkaProducer[String, String](settings, new StringSerializer(), new StringSerializer())
 
   def send(msg: String): Unit = {
-    for (topic <- topics)
-      producer.send(new ProducerRecord[String, String](topic, msg))
+    producer.send(new ProducerRecord[String, String](topic, msg))
   }
 
   def close(): Unit = producer.close()
 }
 
 object Producer {
-  def apply(bootstrapServers: String, topics: Seq[String]): Producer = new Producer(bootstrapServers, topics)
+  def apply(bootstrapServers: String, topic: String): Producer = new Producer(bootstrapServers, topic)
 }
