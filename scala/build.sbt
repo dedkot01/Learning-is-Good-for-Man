@@ -16,6 +16,17 @@ lazy val somethingSmall = project
     )
   )
 
+lazy val somethingSmall211 = project
+  .in(file("something-small_2_11"))
+  .settings(
+    name := "something-small",
+    version := "1.0.0",
+    scalaVersion := "2.11.12",
+    libraryDependencies ++= Seq(
+      "org.json4s" %% "json4s-native" % "3.5.3"
+    )
+  )
+
 lazy val functionalProgrammingInScala = project
   .in(file("functional-programming-in-scala"))
   .settings(
@@ -90,4 +101,21 @@ lazy val SimpleCassandraClients = project
       "org.apache.flink" %% "flink-streaming-scala"     % "1.13.2",
       "org.apache.flink" %% "flink-connector-cassandra" % "1.13.2"
     )
+  )
+
+val sparkVersion = "2.4.0"
+
+lazy val MonitorSparkJob = project
+  .in(file("monitor-spark-job"))
+  .settings(
+    name := "monitor-spark-job",
+    version := "1.0.0",
+    scalaVersion := "2.11.12",
+    libraryDependencies ++= Seq(
+      "org.apache.spark" % "spark-core_2.11"           % sparkVersion % "provided",
+      "org.apache.spark" % "spark-sql_2.11"            % sparkVersion % "provided",
+      "org.apache.spark" % "spark-sql-kafka-0-10_2.11" % sparkVersion % "provided"
+    ),
+    assembly / mainClass := Some("dedkot.Main"),
+    assembly / assemblyJarName := "monitor-spark.jar"
   )
