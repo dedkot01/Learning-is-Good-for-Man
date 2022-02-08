@@ -1,18 +1,9 @@
-# redactors and plugins
-.bloop
-.metals
-.vscode
-.idea
-.bsp
-
 # scala
 target
 
 # python
-.venv
-.lvenv
 __pycache__
 local.py
 
 # general
-.local
+.*

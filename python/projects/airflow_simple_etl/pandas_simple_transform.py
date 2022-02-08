@@ -36,6 +36,10 @@ def main(file: str) -> None:
         """
         Предпоследнее значение привести к числовому виду “1 014 430,57” -> 1014430,57.
         """
+        if s is None:
+            s = '0.0'
+        elif s is not str:
+            s = str(s)
         return float(s.replace(' ', '').replace(',', '.'))
 
     def transform_col9(s: str) -> int:
@@ -89,4 +93,4 @@ def main(file: str) -> None:
 
 
 if __name__ == '__main__':
-    main(file='201170.csv')
+    main(file='201170_er.csv')
