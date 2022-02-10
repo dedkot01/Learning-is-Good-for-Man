@@ -2,13 +2,15 @@ package dedkot
 
 import dedkot.kafka.Producer
 import dedkot.models.Message
+import org.apache.spark.sql.functions.from_json
 import org.apache.spark.sql.streaming.StreamingQuery
-import org.apache.spark.sql.{ DataFrame, SparkSession }
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.{ DataFrame, Row, SparkSession }
 
 import java.lang.Thread.sleep
 
 object Main extends App {
-  def run: Unit = {
+  def run(): Unit = {
     val spark = SparkSession.builder().appName("monitor-spark-job").getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
 
@@ -20,7 +22,11 @@ object Main extends App {
       .selectExpr("CAST(value AS STRING) as value")
 
     val query = df.writeStream.foreachBatch { (batchDF: DataFrame, _: Long) =>
-      batchDF.show()
+      val schema = getDFSchemaFromJson(spark, batchDF, "value")
+      batchDF.select(batchDF("value"), from_json(batchDF("value"), schema).as("json")).foreach { row =>
+        if (row.getAs[Row]("json") == null)
+          println(s"${row.getAs[String]("value")} is corrupted")
+      }
     }.start()
 
     monitoring(
@@ -47,5 +53,10 @@ object Main extends App {
     producer.close()
   }
 
-  run
+  def getDFSchemaFromJson(spark: SparkSession, df: DataFrame, columnName: String): StructType = {
+    import spark.implicits._
+    spark.read.json(df.select(columnName).as[String]).schema
+  }
+
+  run()
 }
