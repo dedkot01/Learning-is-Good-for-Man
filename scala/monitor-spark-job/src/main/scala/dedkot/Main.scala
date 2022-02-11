@@ -1,11 +1,11 @@
 package dedkot
 
 import dedkot.kafka.Producer
-import dedkot.models.Message
+import dedkot.models.Report
 import org.apache.spark.sql.functions.from_json
 import org.apache.spark.sql.streaming.StreamingQuery
 import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.{ DataFrame, Row, SparkSession }
+import org.apache.spark.sql.{ DataFrame, SparkSession }
 
 import java.lang.Thread.sleep
 
@@ -23,14 +23,13 @@ object Main extends App {
 
     val query = df.writeStream.foreachBatch { (batchDF: DataFrame, _: Long) =>
       val schema = getDFSchemaFromJson(spark, batchDF, "value")
-      batchDF.select(batchDF("value"), from_json(batchDF("value"), schema).as("json")).foreach { row =>
-        if (row.getAs[Row]("json") == null)
-          println(s"${row.getAs[String]("value")} is corrupted")
-      }
-    }.start()
+      monitoringCorruptMessage(spark.sparkContext.appName, batchDF, schema, "localhost:9092", "monitorCorrupt")
+
+      batchDF.show()
+    }.option("checkpointLocation", "./checkpoints").start()
 
     monitoring(
-      spark,
+      spark.sparkContext.appName,
       query,
       kafkaBrokers = "localhost:9092",
       kafkaTopic = "monitor",
@@ -38,8 +37,26 @@ object Main extends App {
     )
   }
 
+  def monitoringCorruptMessage(
+    appName: String,
+    df: DataFrame,
+    schema: StructType,
+    kafkaBrokers: String,
+    kafkaTopic: String
+  ): Unit = {
+    val jsonDF = df
+      .select(df("value"), from_json(df("value"), schema).as("json"))
+      .filter("json is null")
+
+    jsonDF.foreach { row =>
+      val producer = Producer(kafkaBrokers, kafkaTopic)
+      producer.send(Report.jsonSnake(Report(appName, row.getAs[String]("value"))))
+      producer.close()
+    }
+  }
+
   def monitoring(
-    spark: SparkSession,
+    appName: String,
     query: StreamingQuery,
     kafkaBrokers: String,
     kafkaTopic: String,
@@ -48,7 +65,7 @@ object Main extends App {
     val producer = Producer(kafkaBrokers, kafkaTopic)
     while (true) {
       sleep(updatePeriodInMillis)
-      producer.send(Message.jsonSnake(Message(spark.sparkContext.appName, query.status, query.lastProgress)))
+      producer.send(Report.jsonSnake(Report(appName, query.status, query.lastProgress)))
     }
     producer.close()
   }
