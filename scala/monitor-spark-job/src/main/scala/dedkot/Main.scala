@@ -2,12 +2,13 @@ package dedkot
 
 import dedkot.kafka.Producer
 import dedkot.models.Report
-import org.apache.spark.sql.functions.from_json
+import org.apache.spark.sql.functions.{ col, from_json, lit, struct, to_json }
 import org.apache.spark.sql.streaming.StreamingQuery
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{ DataFrame, SparkSession }
 
 import java.lang.Thread.sleep
+import java.time.{ ZoneOffset, ZonedDateTime }
 
 object Main extends App {
   def run(): Unit = {
@@ -48,11 +49,35 @@ object Main extends App {
       .select(df("value"), from_json(df("value"), schema).as("json"))
       .filter("json is null")
 
-    jsonDF.foreach { row =>
+    val output = jsonDF
+      .select(
+        struct(
+          lit("spark").as("source"),
+          lit(ZonedDateTime.now(ZoneOffset.UTC).toString).as("date_time"),
+          struct(
+            lit(appName).as("appName"),
+            jsonDF("value"),
+            lit("corrupt record").as("typeMessage")
+          ).as("message")
+        ).as("value")
+      )
+
+    output.printSchema()
+
+    val result = output
+      .select(to_json(output("value")))
+
+    result.write
+      .format("kafka")
+      .option("kafka.bootstrap.servers", kafkaBrokers)
+      .option("topic", kafkaTopic)
+      .save()
+
+    /*jsonDF.foreach { row =>
       val producer = Producer(kafkaBrokers, kafkaTopic)
       producer.send(Report.jsonSnake(Report(appName, row.getAs[String]("value"))))
       producer.close()
-    }
+    }*/
   }
 
   def monitoring(
