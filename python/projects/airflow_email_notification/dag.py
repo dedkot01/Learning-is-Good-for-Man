@@ -24,25 +24,22 @@ def email_alert(context: dict):
         dag_run: DagRun = context.get('dag_run')
         # task_instance: TaskInstance = context['task_instance']
 
-        if dag_run.dag_id in email_list.keys():
-            email_list = email_list[dag_run.dag_id]
-        else:
-            email_list = email_list['default']
+        email_list = email_list.get(dag_run.dag_id, email_list['default'])
 
         msg = EmailMessage()
         msg['From'] = email_conn.login
         msg['To'] = email_list
 
-        msg['Subject'] = 'FAILED DAG'
-        body = '<h1>OMG!</h1>'
+        subject = f'FAILED DAG: {dag_run.dag_id}'
+        body = f'<h1>OMG: {dag_run.dag_id}</h1>'
 
+        msg['Subject'] = subject
         msg.add_header('Content-Type', 'text/html')
         msg.set_payload(body, 'utf-8')
 
-        server = smtplib.SMTP_SSL(email_conn.host, email_conn.port)
-        server.login(email_conn.login, email_conn.get_password())
-        print(f'Result: ', server.sendmail(msg['From'], msg['To'], msg.as_string()))
-        server.quit()
+        with smtplib.SMTP_SSL(email_conn.host, email_conn.port) as server:
+            server.login(email_conn.login, email_conn.get_password())
+            print(f'Result: ', server.sendmail(msg['From'], msg['To'], msg.as_string()))
     except Exception as e:
         print(f'Email alert fail: {e}')
 
