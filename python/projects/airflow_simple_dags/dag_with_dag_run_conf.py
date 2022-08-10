@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from airflow import DAG
+from airflow.models.dagrun import DagRun
 from airflow.operators.python import PythonOperator
 
 
@@ -10,6 +11,8 @@ def func(text: str, number: int) -> None:
 
 
 def main(text, number, **kwargs):
+    dag_run: DagRun = kwargs['dag_run']
+    dag_run.external_trigger
     text = kwargs['dag_run'].conf.get('text', text)
     number = kwargs['dag_run'].conf.get('number', number)
     func(text, number)
