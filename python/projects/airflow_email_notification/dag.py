@@ -5,6 +5,7 @@ from functools import reduce
 from urllib.parse import urlencode
 
 from airflow import DAG
+from airflow.configuration import AirflowConfigParser
 from airflow.models import Connection, DagRun, Variable
 from airflow.operators.python import PythonOperator
 
@@ -24,10 +25,12 @@ def t2():
 def email_alert(context: dict):
 
     try:
+        airflow_conf: AirflowConfigParser = context['conf']
 
         email_conn = Connection.get_connection_from_secrets('sys_alert')
         email_list: dict = Variable.get('addresses_3_support_lines', deserialize_json=True)
-        url_webserver = Variable.get('url_webserver_airflow')
+
+        url_webserver = airflow_conf.get(section='webserver', key='base_url')  #Variable.get('url_webserver_airflow')
 
         dag_run: DagRun = context.get('dag_run')
         task_instances = dag_run.get_task_instances()
@@ -66,6 +69,7 @@ def email_alert(context: dict):
             print('Result: ', server.sendmail(msg['From'], msg['To'], msg.as_string()))
     except Exception as e:
         print(f'Email alert fail: {e}')
+        Variable.set(key='exception', value=e)
 
 
 with DAG(
