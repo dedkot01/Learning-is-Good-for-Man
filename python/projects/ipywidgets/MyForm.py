@@ -1,4 +1,4 @@
-from ipywidgets import IntProgress
+from ipywidgets import IntProgress, GridspecLayout
 from IPython.display import display
 import time
 
