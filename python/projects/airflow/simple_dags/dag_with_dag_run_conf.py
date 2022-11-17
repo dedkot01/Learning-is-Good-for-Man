@@ -24,7 +24,7 @@ with DAG(
     start_date=datetime(2021, 12, 30),
     catchup=False,
 ) as dag:
-    func_task=PythonOperator(
+    func_task = PythonOperator(
         task_id='func_task',
         python_callable=main,
         op_kwargs={
